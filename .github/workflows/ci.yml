@@ -1,0 +1,41 @@
+name: CI - IoT data platform (minimal)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  python-sanity:
+    name: Python syntax check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Compile Python files (syntax only)
+        run: |
+          echo "Compiling Python files to check syntax..."
+          python -m compileall common snowflake
+
+  docker-compose-validate:
+    name: Validate Kafka docker-compose
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Show docker version
+        run: docker version
+
+      - name: Validate docker-compose.yml
+        run: |
+          docker compose -f snowflake/src/kafka_pipeline/docker-compose.yml config
