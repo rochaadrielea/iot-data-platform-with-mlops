@@ -23,7 +23,7 @@ jobs:
       - name: Compile Python files (syntax only)
         run: |
           echo "Compiling Python files to check syntax..."
-          python -m compileall common snowflake
+          python -m compileall common snowflake azure
 
   docker-compose-validate:
     name: Validate Kafka docker-compose
